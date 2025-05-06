@@ -8,13 +8,22 @@ from dotenv import load_dotenv
 import firebase_admin
 from firebase_admin import credentials
 
-load_dotenv()  # Load .env
+import os
+import streamlit as st
+import firebase_admin
+from firebase_admin import credentials, firestore
+from dotenv import load_dotenv
+import json
 
+# Load environment variables
+load_dotenv()
+
+# Construct credential dict from env vars
 firebase_config = {
     "type": os.getenv("FIREBASE_TYPE"),
     "project_id": os.getenv("FIREBASE_PROJECT_ID"),
     "private_key_id": os.getenv("FIREBASE_PRIVATE_KEY_ID"),
-    "private_key": os.getenv("FIREBASE_PRIVATE_KEY").replace('\\n', '\n'),
+    "private_key": os.getenv("FIREBASE_PRIVATE_KEY").replace("\\n", "\n"),
     "client_email": os.getenv("FIREBASE_CLIENT_EMAIL"),
     "client_id": os.getenv("FIREBASE_CLIENT_ID"),
     "auth_uri": os.getenv("FIREBASE_AUTH_URI"),
@@ -23,6 +32,7 @@ firebase_config = {
     "client_x509_cert_url": os.getenv("FIREBASE_CLIENT_X509_CERT_URL")
 }
 
+# Initialize Firebase
 if not firebase_admin._apps:
     cred = credentials.Certificate(firebase_config)
     firebase_admin.initialize_app(cred)
