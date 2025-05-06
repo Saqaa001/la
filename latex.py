@@ -153,7 +153,12 @@ if submitted:
 # --- View All Questions ---
 st.subheader("📋 All Questions in Firestore")
 try:
-    docs = db.collection("questions").stream()
+    docs = (
+        db.collection("questions")
+        .order_by("id", direction=firestore.Query.DESCENDING)
+        .limit(3)
+        .stream()
+    )
     rows = [{"ID": doc.id, **doc.to_dict()} for doc in docs]
     if rows:
         df = pd.DataFrame(rows)
